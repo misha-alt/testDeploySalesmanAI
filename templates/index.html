@@ -112,7 +112,7 @@
     appendMessage(text, 'user');
     userInput.value = '';
 
-    fetch('/chat', {
+    fetch('https://testdeploysalesmanai-production.up.railway.app/chat', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({ user_id: userId, message: text })

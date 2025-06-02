@@ -3,6 +3,7 @@ import re
 import logging
 from dotenv import load_dotenv
 from flask import Flask, request, jsonify, render_template
+from flask_cors import CORS
 
 from openai import OpenAI
 from qwenGmail import send_order_to_email
@@ -13,6 +14,16 @@ load_dotenv()
 logging.basicConfig(level=logging.INFO)
 
 app = Flask(__name__)
+
+# Получаем список разрешенных доменов из переменной окружения
+ALLOWED_ORIGINS = os.getenv('ALLOWED_ORIGINS', 'http://localhost:3000').split(',')
+
+# Настройка CORS через переменные окружения
+CORS(app, resources={r"/*": {
+    "origins": ALLOWED_ORIGINS,
+    "methods": ["GET", "POST"],
+    "allow_headers": ["Content-Type"]
+}})
 user_histories = {}
 
 # Настройки API Qwen
@@ -121,4 +132,7 @@ def chat():
         return jsonify({"reply": f"Произошла ошибка: {str(e)}"}), 500
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    # Получаем порт из переменных окружения (Railway автоматически устанавливает PORT)
+    port = int(os.getenv("PORT", 5000))
+    # Запускаем в production режиме
+    app.run(host='0.0.0.0', port=port)
