@@ -5,7 +5,7 @@ from chromadb.config import Settings
 from sentence_transformers import SentenceTransformer
 
 # Модель эмбеддингов
-model = SentenceTransformer("all-MiniLM-L6-v2")
+model = SentenceTransformer("paraphrase-MiniLM-L3-v2")
 
 # Подключение к ChromaDB
 chroma_client = chromadb.PersistentClient(path="./chroma_db")
